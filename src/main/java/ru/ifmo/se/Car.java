@@ -8,9 +8,15 @@ import ru.ifmo.se.annotations.JORMIgnoredColumn;
 public class Car {
     private String manufacturer;
     private String model;
-    private long serialNumber;
+    private int serialNumber;
 
-    @JORMIgnoredColumn
-    private int[] array;
+    Car(String m, String model, int i){
+        manufacturer = m;
+        this.model = model;
+        serialNumber = i;
+    }
+
+//    @JORMIgnoredColumn
+//    private int[] array;
 
 }
