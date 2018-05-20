@@ -64,7 +64,20 @@ public class DML {
     }
 
     public void delete(Class table, int id) throws SQLException{
+        Statement statement = connection.createStatement();
+        statement.execute("delete from " + table.getSimpleName() + " where id=" + id + ";");
+    }
 
+    public void delete(Class table, String[] conditions) throws SQLException{
+        StringBuilder builder = new StringBuilder("delete from " + table.getSimpleName() + " where ");
+        if (conditions.length > 0) {
+            for (String string : conditions)
+                builder.append(string + " and ");
+            builder.delete(builder.length() - 5, builder.length()).append(";");
+        } else
+            builder.delete(builder.length() - 7, builder.length()).append(";");
+        Statement statement = connection.createStatement();
+        statement.execute(builder.toString());
     }
 
     public ArrayList<ArrayList<Object>> toArrayList (ResultSet set) throws SQLException{

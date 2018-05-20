@@ -107,4 +107,23 @@ public class DMLTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testDelete() {
+        try{
+            dml.delete(Car.class, 1);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testDeleteWithConditions() {
+        String[] cond = {"id > 3", "serialNumber = 0"};
+        try{
+            dml.delete(Car.class, cond);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
