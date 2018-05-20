@@ -9,6 +9,12 @@ public class Car {
     private String manufacturer;
     private String model;
     private int serialNumber;
+    @JORMIgnoredColumn
+    private int[] array;
+
+    Car(){
+
+    }
 
     Car(String m, String model, int i){
         manufacturer = m;
@@ -16,7 +22,5 @@ public class Car {
         serialNumber = i;
     }
 
-//    @JORMIgnoredColumn
-//    private int[] array;
 
 }
