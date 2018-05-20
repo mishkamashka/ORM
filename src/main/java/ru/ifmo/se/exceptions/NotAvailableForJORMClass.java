@@ -9,6 +9,6 @@ public class NotAvailableForJORMClass extends java.lang.Exception {
 
     @Override
     public String toString() {
-        return super.toString() + this.reason;
+        return super.toString() + " " + this.reason;
     }
 }

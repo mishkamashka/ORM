@@ -8,6 +8,13 @@ import java.sql.Statement;
 public class ConnectionTest {
 
     @Test
+    public void test() {
+        String s = "a";
+        int i = 0;
+        System.out.println(s.getClass().getSimpleName());
+    }
+
+    @Test
     public void testCreatingHelios() { //need to tunnel first ssh -L localhost:9999:"pg":5432 s243877@se.ifmo.ru -p 2222
         try{
             PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
@@ -17,7 +24,7 @@ public class ConnectionTest {
     }
 
     @Test
-    public void testUsingConnectionCreate() { //need to tunnel first ssh -L localhost:9999:"pg":5432 s243877@se.ifmo.ru -p 2222
+    public void testUsingConnectionCreate() {
         try{
             PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
             Statement statement = connection.getConnection().createStatement();

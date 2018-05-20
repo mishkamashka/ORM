@@ -21,11 +21,11 @@ public class PSQLConnection {
         dataSource.setPassword(password);
 
         this.connection = dataSource.getConnection();
-        Statement stmt=connection.createStatement();
-        ResultSet rs=stmt.executeQuery("select * from person");
-        while(rs.next()){
-            System.out.println(rs.getString(2));
-        }
+//        Statement stmt=connection.createStatement();
+//        ResultSet rs=stmt.executeQuery("select * from person");
+//        while(rs.next()){
+//            System.out.println(rs.getString(2));
+//        }
     }
 
     public Connection getConnection() {

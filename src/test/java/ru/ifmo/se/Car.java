@@ -1,14 +1,14 @@
 package ru.ifmo.se;
-//it's for testing
 
 import ru.ifmo.se.annotations.JORM;
 import ru.ifmo.se.annotations.JORMIgnoredColumn;
 
 @JORM
 public class Car {
-    private String manufacturer;
-    private String model;
     private int serialNumber;
+    private String model;
+    private String manufacturer;
+
     @JORMIgnoredColumn
     private int[] array;
 
@@ -16,10 +16,10 @@ public class Car {
 
     }
 
-    Car(String m, String model, int i){
+    Car(int serialNumber, String model, String m){
         manufacturer = m;
         this.model = model;
-        serialNumber = i;
+        this.serialNumber = serialNumber;
     }
 
 

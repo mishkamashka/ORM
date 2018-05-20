@@ -1,6 +1,5 @@
 package ru.ifmo.se;
 
-import ru.ifmo.se.annotations.JORM;
 import ru.ifmo.se.exceptions.NotAvailableForJORMClass;
 
 import java.sql.Connection;
@@ -11,7 +10,7 @@ import java.util.Map;
 
 
 public class DDL {
-    Map<String, String> columns = new HashMap<String, String>(); //name, type
+    Map<String, String> columns = new HashMap<>(); //name, type
     Connection connection;
     StringBuilder builder;
 
@@ -19,16 +18,30 @@ public class DDL {
         this.connection = connection;
     }
 
-    public void createTable(Object object) throws NotAvailableForJORMClass, SQLException{
+    public int createTable(Class object) throws NotAvailableForJORMClass, SQLException{
         columns = ObjectAnalyzer.getColumns(object);
-        builder = new StringBuilder("CREATE TABLE " + object.getClass().getSimpleName() + "(id serial primary key, ");
+        builder = new StringBuilder("create table " + object.getSimpleName() + "(id serial primary key, ");
         for (Map.Entry<String, String> column: columns.entrySet()) {
             builder.append(column.getKey() + " " + column.getValue() + ", ");
         }
-        builder.delete(builder.toString().length()-2,builder.toString().length()).append(");");
-        System.out.println(builder.toString());
+        builder.delete(builder.length()-2,builder.length()).append(");");
         Statement statement = connection.createStatement();
-        statement.executeUpdate(builder.toString());
+        try{
+            statement.executeUpdate(builder.toString());
+            return 0;
+        } catch (SQLException e){
+            return -1;
+        }
+    }
+
+    public int dropTable(Class object) throws SQLException{
+        Statement statement = connection.createStatement();
+        try{
+            statement.executeUpdate("drop table " + object.getSimpleName() + ";");
+            return 0;
+        } catch (SQLException e){
+            return -1;
+        }
     }
 
 }
