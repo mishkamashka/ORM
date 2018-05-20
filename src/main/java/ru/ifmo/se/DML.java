@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class DML {
-    Connection connection;
+    private Connection connection;
 
     DML(Connection connection){
         this.connection = connection;
@@ -21,9 +21,12 @@ public class DML {
 
     public ResultSet select(Class table, String[] columns) throws SQLException{
         StringBuilder builder = new StringBuilder("select ");
-        for (String string: columns)
-            builder.append(string + ",");
-        builder.deleteCharAt(builder.length()).append(" from " + table.getSimpleName() + ";");
+        if (columns.length > 0) {
+            for (String string : columns)
+                builder.append(string + ",");
+            builder.deleteCharAt(builder.length() - 1).append(" from " + table.getSimpleName() + ";");
+        } else
+            builder.append("* from " + table.getSimpleName() + ";");
         Statement statement = connection.createStatement();
         ResultSet set = statement.executeQuery(builder.toString());
         return set;
@@ -31,13 +34,20 @@ public class DML {
 
     public ResultSet select(Class table, String[] columns, String conditions[]) throws SQLException{
         StringBuilder builder = new StringBuilder("select ");
-        for (String string: columns)
-            builder.append(string + ",");
-        builder.deleteCharAt(builder.length()).append(" from " + table.getSimpleName() + " where ");
-        for (String string: conditions)
-            builder.append(string + " and ");
-        builder.delete(builder.length()-2, builder.length()).append(";");
+        if (columns.length > 0) {
+            for (String string : columns)
+                builder.append(string + ",");
+            builder.deleteCharAt(builder.length()-1).append(" from " + table.getSimpleName() + " where ");
+        } else
+            builder.append("* from " + table.getSimpleName() + " where ");
+        if (conditions.length > 0) {
+            for (String string : conditions)
+                builder.append(string + " and ");
+            builder.delete(builder.length() - 4, builder.length()).append(";");
+        } else
+            builder.delete(builder.length() - 6, builder.length()).append(";");
         Statement statement = connection.createStatement();
+        System.out.println(builder.toString());
         ResultSet set = statement.executeQuery(builder.toString());
         return set;
     }
@@ -49,12 +59,11 @@ public class DML {
             builder.append(column.getValue() + ",");
         }
         builder.deleteCharAt(builder.length()-1).append(");");
-        System.out.println(builder.toString());
         Statement statement = connection.createStatement();
         statement.execute(builder.toString());
     }
 
-    public void delete() throws SQLException{
+    public void delete(Class table, int id) throws SQLException{
 
     }
 

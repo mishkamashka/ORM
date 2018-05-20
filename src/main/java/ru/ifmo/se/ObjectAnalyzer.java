@@ -4,7 +4,6 @@ import ru.ifmo.se.annotations.*;
 import ru.ifmo.se.exceptions.NotAvailableForJORMClass;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -22,13 +21,14 @@ public class ObjectAnalyzer {
         for (Field field: fields){
             if (!field.isAnnotationPresent(JORMIgnoredColumn.class)){
                 type = field.getType().getSimpleName();
-                switch (type) {
+                switch (type) { //TODO: нормальная конвертация типов
                     case "long":
                     case "int":
                     case "byte":
                         columns.put(field.getName(), "int");
                         break;
                     case "String":
+                    default:
                         columns.put(field.getName(), "text");
                 }
             }
@@ -56,10 +56,8 @@ public class ObjectAnalyzer {
                     field.setAccessible(true);
                     makePrivate = true;
                 }
-                System.out.println(name);
                 try {
                     if (field.getName().equals(name)) {
-                        System.out.println(field.getName() + " checked");
                         if (type.equals("text"))
                             try {
                                 values.put(field.getName(), "'" + field.get(object).toString() + "'");
@@ -80,7 +78,6 @@ public class ObjectAnalyzer {
                 }
             }
         }
-
         return values;
     }
 }

@@ -30,8 +30,7 @@ public class DMLTest {
 
     @Test
     public void test() {
-        String s = "5";
-        //int i = (Integer) s;
+
     }
 
     @Test
@@ -45,7 +44,54 @@ public class DMLTest {
     }
 
     @Test
-    public void testInsertNoVariabSet() {
+    public void testSelectColumns() {
+        String[] strings = {"id", "serialNumber"};
+        try{
+            ResultSet set = dml.select(Car.class, strings);
+            dml.printResult(dml.toArrayList(set));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSelectCond() {
+        String[] strings = {"id", "serialNumber"};
+        String[] cond = {"id > 2", "serialNumber > 0"};
+        try{
+            ResultSet set = dml.select(Car.class, strings, cond);
+            dml.printResult(dml.toArrayList(set));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSelectCondNoCol() {
+        String[] strings = {};
+        String[] cond = {"id > 2", "serialNumber > 0"};
+        try{
+            ResultSet set = dml.select(Car.class, strings, cond);
+            dml.printResult(dml.toArrayList(set));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSelectColumnNoCond() {
+        String[] strings = {"id", "serialNumber"};
+        String[] cond = {};
+        try{
+            ResultSet set = dml.select(Car.class, strings, cond);
+            dml.printResult(dml.toArrayList(set));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testInsertNoVarSet() {
         try{
             dml.insert(new Car());
         } catch (SQLException | NotAvailableForJORMClass e){
