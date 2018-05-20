@@ -77,7 +77,11 @@ public class DML {
         for (int i = 0; i < resultArray.size(); i++){
             row = resultArray.get(i);
             for (int k = 0; k < row.size(); k++){
-                System.out.print(row.get(k).toString() + " ");
+                try{
+                    System.out.print(row.get(k).toString() + " ");
+                } catch (NullPointerException e){
+                    System.out.print("null ");
+                }
             }
             System.out.println();
         }

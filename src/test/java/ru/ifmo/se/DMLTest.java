@@ -45,6 +45,15 @@ public class DMLTest {
     }
 
     @Test
+    public void testInsertNoVariabSet() {
+        try{
+            dml.insert(new Car());
+        } catch (SQLException | NotAvailableForJORMClass e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testInsert() {
         try{
             dml.insert(new Car(5, "g", "merc"));

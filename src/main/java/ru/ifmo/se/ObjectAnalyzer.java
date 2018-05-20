@@ -61,9 +61,17 @@ public class ObjectAnalyzer {
                     if (field.getName().equals(name)) {
                         System.out.println(field.getName() + " checked");
                         if (type.equals("text"))
-                            values.put(field.getName(), "'" + field.get(object).toString() + "'");
+                            try {
+                                values.put(field.getName(), "'" + field.get(object).toString() + "'");
+                            }catch (NullPointerException e){
+                                values.put(field.getName(), "null");
+                            }
                         else
-                            values.put(field.getType().getSimpleName(), field.get(object).toString());
+                            try {
+                                values.put(field.getType().getSimpleName(), field.get(object).toString());
+                            }catch (NullPointerException e){
+                                values.put(field.getName(), "null");
+                            }
                     }
                     if (makePrivate)
                         field.setAccessible(false);
