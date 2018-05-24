@@ -22,10 +22,19 @@ public class ObjectAnalyzer {
             if (!field.isAnnotationPresent(JORMIgnoredColumn.class)){
                 type = field.getType().getSimpleName();
                 switch (type) { //TODO: нормальная конвертация типов
+                    case "real":
+                        columns.put(field.getName(), "real");
+                        break;
                     case "long":
                     case "int":
                     case "byte":
                         columns.put(field.getName(), "int");
+                        break;
+                    case "boolean":
+                        columns.put(field.getName(), "boolean");
+                        break;
+                    case "char":
+                        columns.put(field.getName(), "char");
                         break;
                     case "String":
                     default:
