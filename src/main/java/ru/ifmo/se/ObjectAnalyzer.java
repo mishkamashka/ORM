@@ -69,15 +69,15 @@ public class ObjectAnalyzer {
                     if (field.getName().equals(name)) {
                         if (type.equals("text"))
                             try {
-                                values.put(field.getName(), "'" + field.get(object).toString() + "'");
+                                values.put(name, "'" + field.get(object).toString() + "'");
                             }catch (NullPointerException e){
-                                values.put(field.getName(), "null");
+                                values.put(name, "null");
                             }
                         else
                             try {
-                                values.put(field.getType().getSimpleName(), field.get(object).toString());
+                                values.put(name, field.get(object).toString());
                             }catch (NullPointerException e){
-                                values.put(field.getName(), "null");
+                                values.put(name, "null");
                             }
                     }
                     if (makePrivate)

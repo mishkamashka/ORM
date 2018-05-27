@@ -26,6 +26,7 @@ public class DDL {
         }
         builder.delete(builder.length()-2,builder.length()).append(");");
         Statement statement = connection.createStatement();
+        System.out.println(builder.toString());
         try{
             statement.executeUpdate(builder.toString());
             return 0;

@@ -4,6 +4,7 @@ import ru.ifmo.se.exceptions.NotAvailableForJORMClass;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DML {
@@ -60,6 +61,7 @@ public class DML {
         }
         builder.deleteCharAt(builder.length()-1).append(");");
         Statement statement = connection.createStatement();
+        System.out.println(builder.toString());
         statement.execute(builder.toString());
     }
 

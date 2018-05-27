@@ -5,9 +5,9 @@ import ru.ifmo.se.annotations.JORMIgnoredColumn;
 
 @JORM
 public class Car {
-    private int serialNumber;
-    private String model;
     private String manufacturer;
+    private String model;
+    private int serialNumber;
 
     @JORMIgnoredColumn
     private int[] array;
