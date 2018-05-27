@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertTrue;
 
 public class DDLTest {
-    private boolean tableExists = false;
+    static private boolean tableExists = false;
 
     @Test
     public void testCreatingTable() { //need to tunnel first ssh -L localhost:9999:"pg":5432 s243877@se.ifmo.ru -p 2222
@@ -17,10 +17,10 @@ public class DDLTest {
             DDL ddl = new DDL(connection.getConnection());
             if (!tableExists) {
                 assertTrue(ddl.createTable(Car.class) == 0);
-                tableExists = true;
             }
             else
-                assertTrue(ddl.createTable(Car.class) == 1);
+                assertTrue(ddl.createTable(Car.class) == -1);
+            tableExists = true;
         } catch (SQLException | NotAvailableForJORMClass e){
             e.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class DDLTest {
                 tableExists = false;
             }
             else
-                assertTrue(ddl.dropTable(Car.class) == 1);
+                assertTrue(ddl.dropTable(Car.class) == -1);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -21,6 +21,4 @@ public class Car {
         this.model = model;
         this.serialNumber = serialNumber;
     }
-
-
 }
