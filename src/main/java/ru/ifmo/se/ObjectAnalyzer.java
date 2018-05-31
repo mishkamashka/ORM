@@ -21,7 +21,7 @@ public class ObjectAnalyzer {
         for (Field field: fields){
             if (!field.isAnnotationPresent(JORMIgnoredColumn.class)){
                 type = field.getType().getSimpleName();
-                switch (type) { //TODO: нормальная конвертация типов
+                switch (type) {
                     case "real":
                         columns.put(field.getName(), "real");
                         break;
