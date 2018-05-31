@@ -90,7 +90,7 @@ public class Tester {
     private ArrayList<? super Object> createParameters(Class<?>[] paramtypes){
         int paramcount = paramtypes.length;
         ArrayList<? super Object> params = new ArrayList<>();
-        for (int i = 0; i <= paramcount; i++){
+        for (int i = 0; i < paramcount; i++){
             if (paramtypes[i].equals(String.class))
                 params.add(i,"");
             else
