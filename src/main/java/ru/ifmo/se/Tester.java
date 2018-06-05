@@ -1,6 +1,6 @@
 package ru.ifmo.se;
 
-import org.reflections.Reflections;
+import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.RegexPatternTypeFilter;
@@ -8,16 +8,16 @@ import org.springframework.core.type.filter.RegexPatternTypeFilter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Pattern;
 
 public class Tester {
     String pack;
-    //Set<Class<?>> classes;
     Set<Class> classes;
     Constructor[] constructors;
     Method[] methods;
@@ -25,6 +25,11 @@ public class Tester {
     private static Logger logger = Logger.getLogger(Tester.class.getName());
 
     public Tester(String pack){
+        logger.setLevel(Level.ALL);
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setFormatter(new SimpleFormatter());
+        handler.setLevel(Level.ALL);
+        logger.addHandler(handler);
         this.pack = pack;
     }
 
@@ -48,23 +53,37 @@ public class Tester {
             }
         }
         return set;
-//        Reflections reflections = new Reflections(pack);
-//        return reflections.getSubTypesOf(Object.class);
     }
 
     private void testMethods(Set<Class> classes){
         Class<?>[] paramtypes;
-        ArrayList<? super Object> params;
+        Object[] params;
+        Class<?>[] conparamtypes;
+        Object[] conparams;
         for (Class<?> clazz : classes){
             methods = clazz.getDeclaredMethods();
-            for (Method method : methods){
+            for (Method method : methods) {
                 paramtypes = method.getParameterTypes();
                 params = this.createParameters(paramtypes);
-                try{
-                    method.invoke(clazz.newInstance(), params.toArray());
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e){
+                try {
+                    method.invoke(clazz.newInstance(), params);
+                    logger.fine("Method " + method.toString() + " invoking finished without exceptions.");
+                } catch (InstantiationException e1) {
+                    constructors = clazz.getDeclaredConstructors();
+                    for (Constructor<?> constructor : constructors) {
+                        conparamtypes = constructor.getParameterTypes();
+                        conparams = this.createParameters(conparamtypes);
+                        try {
+                            method.invoke(constructor.newInstance(conparams), params);
+                            logger.fine("Method " + method.toString() + " invoking finished without exceptions.");
+                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                            logger.info("Constructor " + constructor.toString() + ":\n" + e.toString());
+                        }
+                    }
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     System.out.println(e.toString());
-                    logger.info(e.toString());
+                    logger.info("Method " + method.toString() + ":\n" + e.toString());
+                    e.printStackTrace();
                 }
             }
         }
@@ -72,7 +91,7 @@ public class Tester {
 
     private void testConstructors(Set<Class> classes){
         Class<?>[] paramtypes;
-        ArrayList<? super Object> params;
+        Object[] params;
         for (Class<?> clazz : classes){
             constructors = clazz.getDeclaredConstructors();
             for (Constructor<?> constructor : constructors){
@@ -80,31 +99,33 @@ public class Tester {
                 params = this.createParameters(paramtypes);
                 try{
                     constructor.newInstance(params);
+                    logger.fine("Constructor " + constructor.toString() + " invoking finished without exceptions.");
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException e){
-                    logger.info(e.toString());
+                    logger.info("Constructor " + constructor.toString() + ":\n" + e.toString());
+                    e.printStackTrace();
                 }
             }
         }
     }
 
-    private ArrayList<? super Object> createParameters(Class<?>[] paramtypes){
+    private Object[] createParameters(Class<?>[] paramtypes){
         int paramcount = paramtypes.length;
-        ArrayList<? super Object> params = new ArrayList<>();
+        Object[] array = new Object[paramcount];
         for (int i = 0; i < paramcount; i++){
             if (paramtypes[i].equals(String.class))
-                params.add(i,"");
+                array[i]="";
             else
             if (paramtypes[i].equals(boolean.class))
-                params.add(i,false);
+                array[i]=false;
             else
-            if (paramtypes[i].getSuperclass().equals(Number.class) || paramtypes[i].equals(int.class) || paramtypes[i].equals(float.class)
+            if (paramtypes[i].equals(int.class) || paramtypes[i].equals(float.class)
                     || paramtypes[i].equals(byte.class) || paramtypes[i].equals(long.class) || paramtypes[i].equals(short.class)
                     || paramtypes[i].equals(double.class))
-                params.add(i,0);
+                array[i]=0;
             else
-                params.add(i,null);
+                array[i]=null;
         }
-        return params;
+        return array;
     }
 
 }
