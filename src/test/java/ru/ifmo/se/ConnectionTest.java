@@ -15,9 +15,9 @@ public class ConnectionTest {
     }
 
     @Test
-    public void testCreatingHelios() { //need to tunnel first ssh -L localhost:9999:"pg":5432 s243877@se.ifmo.ru -p 2222
+    public void testCreatingHelios() { //need to tunnel first ssh -L localhost:9999:"pg":5432 user@se.ifmo.ru -p 2222
         try{
-            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
+            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "user", "password");
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -26,7 +26,7 @@ public class ConnectionTest {
     @Test
     public void testUsingConnectionCreate() {
         try{
-            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
+            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "user", "password");
             Statement statement = connection.getConnection().createStatement();
             statement.executeUpdate("create table test();");
         } catch (SQLException e){
@@ -35,9 +35,9 @@ public class ConnectionTest {
     }
 
     @Test
-    public void testUsingConnectionDrop() { //need to tunnel first ssh -L localhost:9999:"pg":5432 s243877@se.ifmo.ru -p 2222
+    public void testUsingConnectionDrop() { //need to tunnel first ssh -L localhost:9999:"pg":5432 user@se.ifmo.ru -p 2222
         try{
-            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
+            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "user", "password");
             Statement statement = connection.getConnection().createStatement();
             statement.executeUpdate("drop table test;");
         } catch (SQLException e){

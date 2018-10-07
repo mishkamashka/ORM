@@ -11,9 +11,9 @@ public class DDLTest {
     static private boolean tableExists = false;
 
     @Test
-    public void testCreatingTable() { //need to tunnel first ssh -L localhost:9999:"pg":5432 s243877@se.ifmo.ru -p 2222
+    public void testCreatingTable() { //need to tunnel first ssh -L localhost:9999:"pg":5432 user@se.ifmo.ru -p 2222
         try{
-            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
+            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "user", "password");
             DDL ddl = new DDL(connection.getConnection());
             if (!tableExists) {
                 assertTrue(ddl.createTable(Car.class) == 0);
@@ -29,7 +29,7 @@ public class DDLTest {
     @Test
     public void testDroppingTable(){
         try{
-            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
+            PSQLConnection connection = new PSQLConnection("localhost", 9999, "studs", "user", "password");
             DDL ddl = new DDL(connection.getConnection());
             if (tableExists) {
                 assertTrue(ddl.dropTable(Car.class) == 0);

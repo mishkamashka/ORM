@@ -15,7 +15,7 @@ public class DMLTest {
     @Before
     public void connect(){
         try {
-            connection = new PSQLConnection("localhost", 9999, "studs", "s243877", "joc574");
+            connection = new PSQLConnection("localhost", 9999, "studs", "user", "password");
             ddl = new DDL(connection.getConnection());
             try {
                 ddl.createTable(Car.class);
